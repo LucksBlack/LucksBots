@@ -51,5 +51,21 @@ async def removercargo(ctx, membro: discord.Member, *, nome_do_cargo):
     except Exception as e:
         await ctx.send(f"⚠️ Erro ao remover cargo: {e}")
 
+import base64
+
+@bot.command()
+async def encrypt(ctx, *, texto: str):
+    try:
+        texto_bytes = texto.encode('utf-8')
+        criptografado = base64.b64encode(texto_bytes).decode('utf-8')
+
+        with open("mensagem_criptografada.txt", "w") as f:
+            f.write(criptografado)
+
+        await ctx.send(file=discord.File("mensagem_criptografada.txt"))
+        os.remove("mensagem_criptografada.txt")
+    except Exception as e:
+        await ctx.send(f"❌ Ocorreu um erro: {e}")
+        
 # Rodar o bot com token da variável de ambiente
 bot.run(os.getenv("TOKEN"))
