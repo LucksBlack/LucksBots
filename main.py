@@ -132,5 +132,23 @@ async def sobre(ctx):
     embed.set_footer(text="Obrigado por usar o LuckBot!")
     await ctx.send(embed=embed)
 
+@bot.command(name="usuários")
+@commands.has_permissions(manage_roles=True)
+async def listar_usuarios(ctx):
+    membros = [m for m in ctx.guild.members if not m.bot]
+    texto = ""
+
+    for membro in membros:
+        cargos = [cargo.name for cargo in membro.roles if cargo.name != "@everyone"]
+        cargos_texto = ", ".join(cargos) if cargos else "Sem cargos"
+        texto += f"👤 {membro.display_name} — Cargos: {cargos_texto}\n"
+
+    if len(texto) > 2000:
+        # Se for muito texto, envie em partes
+        for parte in [texto[i:i+1990] for i in range(0, len(texto), 1990)]:
+            await ctx.send(f"```{parte}```")
+    else:
+        await ctx.send(f"```{texto}```")
+        
 # Inicia o bot com o TOKEN da variável de ambiente
 bot.run(os.getenv("TOKEN"))
