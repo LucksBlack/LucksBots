@@ -24,7 +24,15 @@ async def on_member_join(member):
     cargo = discord.utils.get(member.guild.roles, name="Membro")
     if cargo:
         await member.add_roles(cargo)
-
+@bot.event
+async def on_member_remove(member):
+    canal = discord.utils.get(member.guild.text_channels, name='geral')
+    if canal:
+        await canal.send(
+            f"😢 O usuário **{member.name}** saiu do servidor.\n"
+            "Esperamos que volte algum dia!"
+        )
+        
 @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def cargo(ctx, membro: discord.Member, *, nome_do_cargo):
