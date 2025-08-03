@@ -6,11 +6,11 @@ import asyncio
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="+", intents=intents)
 
-@bot.event
+ @bot.event
 async def on_ready():
     print(f"✅ LuckBot está online como {bot.user}.")
 
-@bot.event
+ @bot.event
 async def on_member_join(member):
     canal = discord.utils.get(member.guild.text_channels, name="geral")
     if canal:
@@ -25,7 +25,7 @@ async def on_member_join(member):
     cargo = discord.utils.get(member.guild.roles, name="Membro")
     if cargo:
         await member.add_roles(cargo)
-@bot.event
+ @bot.event
 async def on_member_remove(member):
     canal = discord.utils.get(member.guild.text_channels, name='geral')
     if canal:
@@ -34,7 +34,7 @@ async def on_member_remove(member):
             "Esperamos que volte algum dia!"
         )
         
-@bot.command()
+ @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def cargo(ctx, membro: discord.Member, *, nome_do_cargo):
     cargo = discord.utils.get(ctx.guild.roles, name=nome_do_cargo)
@@ -47,7 +47,7 @@ async def cargo(ctx, membro: discord.Member, *, nome_do_cargo):
     except Exception as e:
         await ctx.send(f"⚠️ Erro ao adicionar cargo: {e}")
 
-@bot.command()
+ @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def removercargo(ctx, membro: discord.Member, *, nome_do_cargo):
     cargo = discord.utils.get(ctx.guild.roles, name=nome_do_cargo)
@@ -62,7 +62,7 @@ async def removercargo(ctx, membro: discord.Member, *, nome_do_cargo):
 
 import base64
 
-@bot.command()
+ @bot.command()
 async def encrypt(ctx, *, texto: str):
     try:
         texto_bytes = texto.encode('utf-8')
@@ -76,7 +76,7 @@ async def encrypt(ctx, *, texto: str):
     except Exception as e:
         await ctx.send(f"❌ Ocorreu um erro: {e}")
 
-@bot.command()
+ @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def mute(ctx, member: discord.Member, dias: int):
     mute_role = discord.utils.get(ctx.guild.roles, name="Mutado")
@@ -93,7 +93,7 @@ async def mute(ctx, member: discord.Member, dias: int):
     await member.remove_roles(mute_role)
     await ctx.send(f"🔈 {member.mention} foi desmutado automaticamente após {dias} dia(s).")
 
-@bot.command()
+ @bot.command()
 @commands.has_permissions(manage_roles=True)
 async def unmute(ctx, member: discord.Member):
     mute_role = discord.utils.get(ctx.guild.roles, name="Mutado")
@@ -103,7 +103,7 @@ async def unmute(ctx, member: discord.Member):
     else:
         await ctx.send("⚠️ Esse usuário não está mutado.")
 
-@bot.command()
+ @bot.command()
 async def ajuda(ctx):
     embed = discord.Embed(
         title="🧠 LuckBot - Lista de Comandos",
