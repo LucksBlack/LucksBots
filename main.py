@@ -102,6 +102,22 @@ async def unmute(ctx, member: discord.Member):
         await ctx.send(f"🔈 {member.mention} foi desmutado com sucesso.")
     else:
         await ctx.send("⚠️ Esse usuário não está mutado.")
-        
+
+@bot.command()
+async def ajuda(ctx):
+    embed = discord.Embed(
+        title="🧠 LuckBot - Lista de Comandos",
+        description="Aqui estão os comandos disponíveis:",
+        color=discord.Color.blue()
+    )
+    embed.add_field(name="🧍‍♂️ +cargo @usuário Cargo", value="Adiciona o cargo `Staff` ou `ADM` ao usuário mencionado. Requer permissão.", inline=False)
+    embed.add_field(name="🧍‍♂️ remove cargo @usuário Cargo", value="Remove o cargo do usuário mencionado. Requer permissão.", inline=False)
+    embed.add_field(name="🔇 +mute @usuário dias", value="Silencia o usuário por uma quantidade de dias. Requer permissão.", inline=False)
+    embed.add_field(name="🔊 +unmute @usuário", value="Remove o mute do usuário. Requer permissão.", inline=False)
+    embed.add_field(name="🔐 +encrypt mensagem", value="Criptografa a mensagem e envia como arquivo.", inline=False)
+    embed.add_field(name="📩 +ajuda", value="Exibe esta lista de comandos.", inline=False)
+
+    await ctx.send(embed=embed)
+    
 # Rodar o bot com token da variável de ambiente
 bot.run(os.getenv("TOKEN"))
