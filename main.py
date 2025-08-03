@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 import asyncio
 import base64
+import aiohttp
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="+", intents=intents)
@@ -150,5 +151,17 @@ async def listar_usuarios(ctx):
     else:
         await ctx.send(f"```{texto}```")
         
+@bot.command(name="randomimage")
+async def random_image(ctx):
+    await ctx.trigger_typing()
+    url = "https://picsum.photos/600/400"  # Imagem aleatória 600x400
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            if resp.status != 200:
+                await ctx.send("❌ Não consegui pegar uma imagem agora.")
+                return
+            data = await resp.read()
+            await ctx.send(file=discord.File(io.BytesIO(data), filename="imagem.jpg"))
+            
 # Inicia o bot com o TOKEN da variável de ambiente
 bot.run(os.getenv("TOKEN"))
