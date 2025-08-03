@@ -4,6 +4,8 @@ import os
 import asyncio
 import base64
 import aiohttp
+import requests
+from io import BytesIO
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="+", intents=intents)
