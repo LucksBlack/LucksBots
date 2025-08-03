@@ -118,6 +118,22 @@ async def ajuda(ctx):
     embed.add_field(name="📩 +ajuda", value="Exibe esta lista de comandos.", inline=False)
 
     await ctx.send(embed=embed)
+
+ @bot.command()
+async def sobre(ctx):
+    embed = discord.Embed(
+        title="🤖 Sobre o LuckBot",
+        description=(
+            "O **LuckBot** foi criado com o objetivo de trazer comandos criativos, úteis e "
+            "engraçados para servidores do Discord. Ele nasceu de um projeto pessoal para testar ideias "
+            "inovadoras, e foi evoluindo com o tempo até se tornar um bot com várias funções administrativas, "
+            "de entretenimento e criptografia.\n\n"
+            "Feito com ❤️ por quem ama tecnologia e quer transformar servidores em experiências mais vivas e únicas."
+        ),
+        color=discord.Color.green()
+    )
+    embed.set_footer(text="Obrigado por usar o LuckBot!")
+    await ctx.send(embed=embed)
     
 # Rodar o bot com token da variável de ambiente
 bot.run(os.getenv("TOKEN"))
