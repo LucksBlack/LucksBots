@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import os
+import asyncio
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix="+", intents=intents)
@@ -74,6 +75,33 @@ async def encrypt(ctx, *, texto: str):
         os.remove("mensagem_criptografada.txt")
     except Exception as e:
         await ctx.send(f"❌ Ocorreu um erro: {e}")
+
+@bot.command()
+@commands.has_permissions(manage_roles=True)
+async def mute(ctx, member: discord.Member, dias: int):
+    mute_role = discord.utils.get(ctx.guild.roles, name="Mutado")
+
+    if not mute_role:
+        mute_role = await ctx.guild.create_role(name="Mutado")
+        for channel in ctx.guild.channels:
+            await channel.set_permissions(mute_role, send_messages=False, speak=False)
+
+    await member.add_roles(mute_role)
+    await ctx.send(f"🔇 {member.mention} foi mutado por {dias} dia(s).")
+
+    await asyncio.sleep(dias * 86400)
+    await member.remove_roles(mute_role)
+    await ctx.send(f"🔈 {member.mention} foi desmutado automaticamente após {dias} dia(s).")
+
+@bot.command()
+@commands.has_permissions(manage_roles=True)
+async def unmute(ctx, member: discord.Member):
+    mute_role = discord.utils.get(ctx.guild.roles, name="Mutado")
+    if mute_role and mute_role in member.roles:
+        await member.remove_roles(mute_role)
+        await ctx.send(f"🔈 {member.mention} foi desmutado com sucesso.")
+    else:
+        await ctx.send("⚠️ Esse usuário não está mutado.")
         
 # Rodar o bot com token da variável de ambiente
 bot.run(os.getenv("TOKEN"))
